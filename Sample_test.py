@@ -1,28 +1,12 @@
 from playwright.sync_api import sync_playwright
+from l import stage_login, get_excel_data, EXCEL_FILE
+from playwright.sync_api import Page
 import random
 
-with sync_playwright() as p:
-    browser = p.chromium.launch(channel="chrome", headless=False)
-    page = browser.new_page()
-    
-    # Navigate to login page
-    page.goto("https://qa-dev.apiwiz.io/auth", wait_until="networkidle", timeout=60000)
-    
-    # --------- LOGIN ---------
-    username = page.locator('//input[@placeholder="Enter Username"]')
-    username.wait_for(state="visible", timeout=10000)
-    username.fill('AkshathaSM')
 
-    password = page.locator('//input[@placeholder="Enter Password"]')
-    password.wait_for(state="visible", timeout=10000)
-    password.fill('Aad77607945@998')
-
-    login_button = page.locator('//div[contains(@class,"bg-blue-800") and contains(@class,"cursor-pointer")]')
-    login_button.wait_for(state="visible", timeout=10000)
-    login_button.click()
     
-    page.locator('//div[@class="text-transform-uppercase flex-center cursor-pointer position-relative bg-gray-500 text-white w-24px h-24px bg-gray-500 br-50 border-stroke-section-1px fs-13px fw-500"]').click()
-    print("Navigating to login page...")
+def run_api_design_flow(page: Page):
+# Now `page` is already logged in
     
     # --------- NAVIGATE TO API DESIGN PAGE ---------
     page.goto("https://qa-dev.apiwiz.io/api-design/oas/new", wait_until="networkidle", timeout=60000)
@@ -46,8 +30,7 @@ with sync_playwright() as p:
     licenseUrl.fill("https://www.apache.org")
     print("License URL entered successfully.")
 
-    # Licence_Name=page.locator('//input[@class="undefined  isDefault hasBg null null w-100 formInputTag" and @placeholder="Enter license name"]').fill('Apache 2.0')
-    # Licence_Url = page.locator('//input[@class="undefined   hasBg null null w-100 formInputTag" and @placeholder="Enter license url"]').fill('https://url.io')
+  
     Licence_ContactName =page.locator('//input[@class="undefined  isDefault hasBg null null w-100 formInputTag" and @placeholder="Enter contact name"]').fill('APIwiz Support')
     Licence_ContactUrl=page.locator('//input[@class="undefined  isDefault hasBg null null w-100 formInputTag" and @placeholder="Enter contact url"]').fill('https://apiwiz.io/support')
     Lincence_ContactEmail=page.locator('//input[@class="undefined  isDefault hasBg null null w-100 formInputTag" and @placeholder="Enter contact email"]').fill('support@apiwiz.io')
@@ -143,22 +126,28 @@ with sync_playwright() as p:
     
     # Link_AddButton = page.locator('//p[@class="color-text-regular fw-600 fs-13px" and text()="Links"]/ancestor::div[@class="w-100 bg-surface-l2 h-36px p-8px flex-row vt-center hz-space-between border-bottom-stroke-subsection-1px"]/descendant::div[@class="ripple-btn"]')
     # Link_AddButton.click()
+    # page.wait_for_timeout(2000)
     
     # Link_Name = page.locator('//input[@class="noBorder  isDefault hasBg null null w-100 formInputTag" and @placeholder="Enter link name"]')
     # Link_Name.fill('#Link')
+    # page.wait_for_timeout(2000)
     
     # Link_Description = page.locator('//textarea[@class="formInputTag w-100  undefined hasBg null" and @placeholder="Enter link description"]')
     # Link_Description.fill('Retrieve orders for the user')
+    # page.wait_for_timeout(2000)
     
-    # Link_OperationID = page.locator('//p[@class="fs-13px fw-700 color-text-regular" and text()="Operation Id"]/ancestor::div[@class="flex-col gap-4px w-100"]/descendant::div[@class="form__input false flex-row w-100 text-left flex-center br-5px undefined"]')
-    # Link_OperationID.click()
+    # Link_OperationID = page.locator('//p[@class="fs-13px fw-700 color-text-regular" and text()="Operation Type"]/ancestor::div[@class="flex-col gap-4px w-100"]/descendant::div[@class="form__input false flex-row w-100 text-left flex-center br-5px undefined"]')
+    # Link_OperationID.evaluate("el=>.el.click()")
     # Link_OperationID.fill('s').press("Enter")
+    # page.wait_for_timeout(2000)
     
     # Link_RequestBody = page.locator('//input[@class="noBorder  isDefault hasBg null null w-100 formInputTag" and @placeholder="Enter Request Body"]')
     # Link_RequestBody.fill('{ "message": "Check out this link for more info!", "links": [ { "title": "OpenAI Website", "url": "https://www.openai.com", "description": "Official website of OpenAI for AI research and products." }, { "title": "API Documentation", "url": "https://api.example.com/docs", "description": "Full documentation of the Example API." } ], "recipient": { "user_id": "12345", "channel_id": "general" }, "priority": "high" }')
+    # page.wait_for_timeout(2000)
     
     # Link_SaveButton = page.locator('//p[@class="color-text-regular fs-13px text-white fw-500" and text()="Save"]')
     # Link_SaveButton.click()
+    # page.wait_for_timeout(2000)
     
     # Parameter Component
     Parameter = page.locator('//p[@class="color-text-subdued fs-12px fw-600 text-transform-capitalize" and text()="Parameters"]')
@@ -295,29 +284,58 @@ with sync_playwright() as p:
     
     page.wait_for_timeout(2000)
     
-    # MainSaveButton =page.locator('//div[@class="h-100 flex-row vt-center gap-4px hz-center w-80"]')
-    # MainSaveButton.hover()
-    # MainSaveButton.evaluate("el =>el.click()")
-    
-    MainSaveButton = page.locator('//div[@class="h-100 flex-row vt-center gap-4px hz-center w-80"]')
-
-try:
-    MainSaveButton.wait_for(state="visible", timeout=10000)
-    MainSaveButton.hover()
-    MainSaveButton.evaluate("el => el.click()")
-    print("✅ Save button hovered and clicked successfully.")
-except Exception as e:
-    print(f"⚠️ Hover failed, trying force click: {e}")
     try:
-        MainSaveButton.click(force=True)
-        print("✅ Force click successful.")
-    except Exception as e2:
-        print(f"❌ Failed to click Save button: {e2}")
+        print("🕒 Waiting for Save button...")
+        saveButton = page.locator('//div[@class="flex-row vt-center gap-6px position-absolute"]')
+        saveButton.wait_for(state="visible", timeout=10000)
 
-    
-    # Keep the browser open forever
-    print("Browser is open. Close it manually to exit.")
-    while True:
-     pass
+        saveButton.scroll_into_view_if_needed()
+        saveButton.hover()
+        saveButton.click()
+        print("✅ Save button clicked successfully.")
+
+    except Exception as e:
+        print(f"⚠️ Click failed: {e}")
+        try:
+            saveButton.click(force=True)
+            print("✅ Force click successful.")
+        except Exception as e2:
+            print(f"❌ Still failed to click Save button: {e2}")
+            page.screenshot(path="save_button_error.png")
+            print("📸 Screenshot saved: save_button_error.png")
+
+def main():
+    with sync_playwright() as p:
+        # Launch browser maximized
+        browser = p.chromium.launch(channel="chrome", headless=False, args=["--start-maximized"])
+
+        # Create context without a viewport to match window size
+        context = browser.new_context(viewport=None)
+
+        page = context.new_page()
+
+        # Optional: force maximize via JS
+        page.evaluate("window.moveTo(0,0); window.resizeTo(screen.width, screen.height);")
+
+        # ---------- Login (Excel-driven) ----------
+        username, password = get_excel_data(EXCEL_FILE)[0]  
+        stage_login(page, username, password)  
+
+        print("✅ Logged in successfully")
+
+        # ---------- Run API Design Flow ----------
+        run_api_design_flow(page)
+
+        print("🎯 All steps executed successfully")
+        context.close()
+        browser.close()
+
+
+
+if __name__ == "__main__":
+    main()
+
+
+ 
     
     
