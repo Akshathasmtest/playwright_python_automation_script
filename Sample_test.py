@@ -9,7 +9,7 @@ def run_api_design_flow(page: Page):
 # Now `page` is already logged in
     
     # --------- NAVIGATE TO API DESIGN PAGE ---------
-    page.goto("https://qa-dev.apiwiz.io/api-design/oas/new", wait_until="networkidle", timeout=60000)
+    page.goto("https://qa-dev.apiwiz.io/api-design/oas/new",timeout=60000)
 
     page.locator('//div[@class="bg-surface-l1 hover-parent fade-in-0 position-relative hover-bg-surface-underground h-144px p-24px w-234px border-stroke-subsection-1px br-8px hover-surface-underground cursor-pointer flex-col gap-8px"]').click()
     
@@ -191,6 +191,22 @@ def run_api_design_flow(page: Page):
     Parameter_SaveButton = page.locator('//p[@class="color-text-regular fs-13px text-white fw-500" and text()="Save"]')
     Parameter_SaveButton.evaluate("el => el.click()")
     
+    # Model Component
+    Model = page.locator('//p[@class="color-text-subdued fs-12px fw-600 text-transform-capitalize" and text()="Models"]')
+    page.wait_for_timeout(2000)
+    Model.hover()
+    Model.click()
+    
+    Model_AddButton = page.locator('//p[@class="color-text-regular fw-600 fs-13px" and text()="Models"]/ancestor::div[@class="w-100 bg-surface-l2 h-36px p-8px cursor-pointer flex-row vt-center hz-space-between border-bottom-stroke-subsection-1px"]/descendant::div[@class="ripple-btn"][1]')
+    Model_AddButton.click()
+    
+    Model_Name = page.locator('//input[@class="undefined  isDefault undefined null null w-100 formInputTag" and @placeholder="Enter model name"]')
+    Model_Name.fill('ResponseModel')
+    page.wait_for_timeout(2000) 
+    Model_SaveButton=page.locator('//p[@class="color-text-regular fs-13px text-white fw-500" and text()="Save"]')
+    Model_SaveButton.evaluate("el => el.click()")
+   
+    
     # Server Component
     Server = page.locator('//p[@class="color-text-subdued fs-12px fw-600 text-transform-capitalize" and text()="Servers"]') 
     Server.hover()
@@ -276,8 +292,20 @@ def run_api_design_flow(page: Page):
     # ContentType_AddButton =page.locator('//p[@class="fs-14px fw-500 color-text-regular" and text()="Content Type"]/ancestor::div[@class="flex-row vt-center hz-space-between"]/descendant::div[@class="ripple-btn"]')
     # ContentType_AddButton.click()
     
-    # ContentType =page.locator('//p[@class="fs-13px fw-700 color-text-regular" and text()="Content Type"]/ancestor::div[@class="flex-col gap-4px w-100"]/descendant::div[@class="form__input border-bottom-stroke-subsection-1px flex-row w-100 text-left flex-center br-5px undefined"]')
-    # ContentType.click()
+    # ContentType_DropDownButton =page.locator('//p[@class="fs-13px fw-700 color-text-regular" and text()="Content Type"]/ancestor::div[@class="flex-col gap-4px w-100"]/descendant::div[@class="form__input border-bottom-stroke-subsection-1px flex-row w-100 text-left flex-center br-5px undefined"]')
+    # ContentType_DropDownButton.click()
+    # page.wait_for_timeout(3000)
+    # ContentType_DropDownButton.fill('application/json')
+    # page.wait_for_timeout(2000)
+    
+    
+    # Select_ContentTypeTextField = page.locator('//div[@class="css-1jqq78o-placeholder" and text()="Select content type"]')
+    # Select_ContentTypeTextField.click()
+    # Select_ContentTypeTextField.fill('application/json')
+    
+    # Json_ContentType = page.locator('//div[@class="css-1dimb5e-singleValue" and text()="application/json"]')
+    # Json_ContentType.click()
+    
     
     ResponseSaveButton=page.locator('//p[@class="color-text-regular fs-13px text-white fw-500" and text()="Save"]')
     ResponseSaveButton.evaluate("el =>el.click()")

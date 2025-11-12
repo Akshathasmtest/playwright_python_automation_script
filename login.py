@@ -20,7 +20,7 @@ def run(playwright):
 
     password = page.locator('//input[@placeholder="Enter Password"]')
     password.wait_for(state="visible", timeout=10000)
-    password.fill('Aad77607945@998')
+    password.fill('Aad77607945@9988')
 
     login_button = page.locator('//div[contains(@class,"bg-blue-800") and contains(@class,"cursor-pointer")]')
     login_button.wait_for(state="visible", timeout=10000)

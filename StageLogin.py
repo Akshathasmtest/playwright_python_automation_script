@@ -17,13 +17,15 @@ def get_excel_data(file_path: str) -> list[tuple[str, str]]:
     return data
 
 
-EXCEL_FILE = "/Users/akshathasm/Desktop/Playwright_Python/Test/xlsheet.xlsx"
+EXCEL_FILE = "/Users/akshathasm/Desktop/Playwright_Python/Test/LoginData.xlsx"
 
-
+# EXCEL_FILE= "/Users/akshathasm/Desktop/Playwright_Python/Test/xlsheet1.xlsx"
 # ---------- Reusable Login Function ----------
 def stage_login(page: Page, username: str, password: str):
     """Performs login and returns True if successful."""
+    page.evaluate("window.moveTo(0,0); window.resizeTo(screen.width, screen.height);")
     page.goto("https://qa-dev.apiwiz.io/auth", wait_until="networkidle", timeout=60000)
+    page.set_viewport_size({"width": 1600, "height": 900})
     page.locator('//input[@placeholder="Enter Username"]').fill(username)
     page.locator('//input[@placeholder="Enter Password"]').fill(password)
 

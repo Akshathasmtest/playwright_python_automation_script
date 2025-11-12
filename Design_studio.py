@@ -1,6 +1,6 @@
 from playwright.sync_api import sync_playwright
-from l import stage_login, get_excel_data, EXCEL_FILE
-from playwright.sync_api import Page
+from StageLogin import stage_login, get_excel_data, EXCEL_FILE
+from playwright.sync_api import Page , expect
 import random
 
 
@@ -9,19 +9,20 @@ def run_api_design_flow(page: Page):
 # Now `page` is already logged in
     
     # --------- NAVIGATE TO API DESIGN PAGE ---------
-    page.goto("https://qa-dev.apiwiz.io/api-design/oas/new", wait_until="networkidle", timeout=60000)
-
-    page.locator('//div[@class="bg-surface-l1 hover-parent fade-in-0 position-relative hover-bg-surface-underground h-144px p-24px w-234px border-stroke-subsection-1px br-8px hover-surface-underground cursor-pointer flex-col gap-8px"]').click()
+    OAS_AddButton = page.goto("https://qa-dev.apiwiz.io/api-design/oas/new", wait_until="networkidle", timeout=60000)
     
-    page.locator('//input[@class="undefined  false hasBg null null w-100 formInputTag" and @placeholder="Enter swagger name"]').fill('Swagger_1')
-    page.locator('//input[@class="undefined  false hasBg null null w-100 formInputTag" and @placeholder="Enter swagger version"]').fill('1.0.0')
-    page.locator('//input[@class="undefined  isDefault hasBg null null w-100 formInputTag" and @placeholder="Enter Terms of Services URL"]').fill('http://url.io')
-    page.locator('//textarea[@class="formInputTag w-100 false undefined hasBg null"]').fill('This Swagger definition provides a comprehensive specification of the API endpoints, request/response formats, authentication mechanisms, and error handling for the application. The purpose of this API is to enable developers to programmatically interact with the backend services in a standardized, consistent, and secure manner.')
+    StartBlank=page.locator('//div[@class="bg-surface-l1 hover-parent fade-in-0 position-relative hover-bg-surface-underground h-144px p-24px w-234px border-stroke-subsection-1px br-8px hover-surface-underground cursor-pointer flex-col gap-8px"]')
+    StartBlank.click()
     
-    page.locator('//div[@class="css-1xc3v61-indicatorContainer"]').click()
+    Swagger_name = page.locator('//input[@class="undefined  false hasBg null null w-100 formInputTag" and @placeholder="Enter swagger name"]').fill('Swagger_1')
+    Swagger_version=page.locator('//input[@class="undefined  false hasBg null null w-100 formInputTag" and @placeholder="Enter swagger version"]').fill('1.0.0')
+    Swagger_serviceUrl= page.locator('//input[@class="undefined  isDefault hasBg null null w-100 formInputTag" and @placeholder="Enter Terms of Services URL"]').fill('http://url.io')
+    Swagger_Description=page.locator('//textarea[@class="formInputTag w-100 false undefined hasBg null"]').fill('This Swagger definition provides a comprehensive specification of the API endpoints, request/response formats, authentication mechanisms, and error handling for the application. The purpose of this API is to enable developers to programmatically interact with the backend services in a standardized, consistent, and secure manner.')
     
-    page.locator('//div[text()="builder - 1 Domain"]').wait_for(state="visible", timeout=10000)
-    page.locator('//div[text()="builder - 1 Domain"]').click()
+    Environment_DropDown=page.locator('//div[@class="css-1xc3v61-indicatorContainer"]').click()
+    
+    Environment_details=page.locator('//div[text()="builder - 1 Domain"]').wait_for(state="visible", timeout=10000)
+    Environment_details.click()
 
     LicenceName=page.locator('//input[@class="undefined  isDefault hasBg null null w-100 formInputTag" and @placeholder="Enter license name"]').fill('Apache 2.0')
     
@@ -92,7 +93,10 @@ def run_api_design_flow(page: Page):
     
     Example_save_button = page.locator('//p[@class="color-text-regular fs-13px text-white fw-500" and text()="Save"]')
     Example_save_button.evaluate("el => el.click()")
-    
+    page.wait_for_timeout(2000)
+    expect(page.get_by_text("Example created successfully")).to_be_visible(timeout=15000)
+    print("Example created successfull")
+   
     # Header Component
     Header = page.locator('//p[@class="color-text-subdued fs-12px fw-600 text-transform-capitalize" and text()="Headers"]')
     Header.hover()
@@ -303,7 +307,9 @@ def run_api_design_flow(page: Page):
             print(f"❌ Still failed to click Save button: {e2}")
             page.screenshot(path="save_button_error.png")
             print("📸 Screenshot saved: save_button_error.png")
-
+    
+    
+    
 def main():
     with sync_playwright() as p:
         browser = p.chromium.launch(channel="chrome", headless=False, args=["--start-maximized"])
