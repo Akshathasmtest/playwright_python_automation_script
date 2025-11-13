@@ -1,5 +1,6 @@
 from playwright.sync_api import sync_playwright
-from StageLogin import stage_login, get_excel_data, EXCEL_FILE
+# from StageLogin import stage_login, get_excel_data, EXCEL_FILE
+from ProdLogin import Prodlogin,get_excel_data,EXCEL_FILE
 from playwright.sync_api import Page , expect
 import random
 
@@ -9,8 +10,8 @@ def run_api_design_flow(page: Page):
 # Now `page` is already logged in
     
     # --------- NAVIGATE TO API DESIGN PAGE ---------
-    OAS_AddButton = page.goto("https://qa-dev.apiwiz.io/api-design/oas/new", wait_until="networkidle", timeout=60000)
-   
+    # OAS_AddButton = page.goto("https://qa-dev.apiwiz.io/api-design/oas/new", wait_until="networkidle", timeout=60000)
+    OAS_AddButton = page.goto("https://acme-team-production.apiwiz.io/api-design/oas/new", wait_until="networkidle", timeout=60000)
     
     StartBlank=page.locator('//div[@class="bg-surface-l1 hover-parent fade-in-0 position-relative hover-bg-surface-underground h-144px p-24px w-234px border-stroke-subsection-1px br-8px hover-surface-underground cursor-pointer flex-col gap-8px"]')
     StartBlank.click()
@@ -22,8 +23,9 @@ def run_api_design_flow(page: Page):
     
     Environment_DropDown=page.locator('//div[@class="css-1xc3v61-indicatorContainer"]').click()
     
-    Environment_details=page.locator('//div[text()="builder - 1 Domain"]').wait_for(state="visible", timeout=10000)
+    Environment_details=page.locator('//div[text()="DEV - 9 Domains"]').wait_for(state="visible", timeout=10000)
     Environment_details.click()
+    page.wait_for_timeout(2000)
 
     LicenceName=page.locator('//input[@class="undefined  isDefault hasBg null null w-100 formInputTag" and @placeholder="Enter license name"]').fill('Apache 2.0')
     
@@ -320,7 +322,7 @@ def main():
         # ---------- Login (Excel-driven) ----------
         username, password = get_excel_data(EXCEL_FILE)[0]  # fetch first row of Excel
         # stage_login(page, username, password)  # ✅ pass the credentials
-        
+        Prodlogin(page, username, password)
   
         print("✅ Logged in successfully")
 

@@ -28,27 +28,49 @@ def sandboxpage(page: Page):
     
  page.wait_for_timeout(2000)
  
- Sandbox_AddButton =page.locator('//div[@class="fs-16px fw-600 color-text-heading text-nowrap" and text()="Mock Collection"]/ancestor::div[@class="flex-row vt-center hz-space-between px-8px border-bottom-stroke-section-1px h-36px"]/descendant::div[@class="ripple-btn"][3]')
- Sandbox_AddButton.hover()
- page.wait_for_timeout(2000)
+ SandboxWorkflowAddButton =page.locator('//div[@class="fs-16px fw-600 color-text-heading text-nowrap" and text()="Mock Collection"]/ancestor::div[@class="flex-row vt-center hz-space-between px-8px border-bottom-stroke-section-1px h-36px"]/descendant::div[@class="ripple-btn"][3]')
  try:
-        Sandbox_AddButton.click(timeout=5000)
-        print("✅ SandboxAddButton Clicked successfully.")
+        SandboxWorkflowAddButton.hover()
+        page.wait_for_timeout(2000)
+        SandboxWorkflowAddButton.click(timeout=5000)
+        print("✅ SandboxWorkflowAddButton Clicked successfully.")
         page.wait_for_timeout(2000)
  except Exception as e:
-        print("❌ SandboxAddButton not clicked successfully")
+        print("📸 Screenshot saved: SandboxWorkflowAddButton.png")
+        raise Exception("❌ SandboxWorkflowAddButton is not clicked, stopping test!")
+ page.wait_for_timeout(4000)
  
         
- Import_from_Design_Studio= page.locator('//p[@class="text-truncate-1 fs-13px fw-500 color-text-regular" and text()="Import from Design Studio"]/ancestor::div[@class="bg-surface-l1 flex-row vt-center hz-space-between gap-6px zIndex-2 pr-8px"]/descendant::div[@class="flex-row vt-center form__radio cursor-pointer"]')
- Import_from_Design_Studio.click()
+ ImportFromDesignStudio= page.locator('//p[@class="text-truncate-1 fs-13px fw-500 color-text-regular" and text()="Import from Design Studio"]/ancestor::div[@class="bg-surface-l1 flex-row vt-center hz-space-between gap-6px zIndex-2 pr-8px"]/descendant::div[@class="flex-row vt-center form__radio cursor-pointer"]')
+ try:
+       ImportFromDesignStudio.click()
+       print("✅Oas is imported successfully")
+ except Exception as e:
+       page.screenshot(path="screenshots/ImportFromDesignStudio.png")
+       print("📸 Screenshot saved: ImportFromDesignStudio.png")
+       raise Exception("❌ ImportFromDesignStudio button is not clicked successfully, stopping test!")
  
  page.wait_for_timeout(2000)
- Specification_DropDown= page.locator('//div[@class="css-1xc3v61-indicatorContainer"]')
- Specification_DropDown.click(force=True)
- page.wait_for_timeout(2000)
- dadasdadasads =page.locator(f'//div[text()="Swagger_1"]')
- dadasdadasads.click()
- page.wait_for_timeout(2000)
+ 
+ SpecificationDropDown= page.locator('//div[@class="css-1xc3v61-indicatorContainer"]')
+ try:
+       SpecificationDropDown.click(force=True)
+       print("✅SpecificationDropDown Clicked Successfully")
+       page.wait_for_timeout(2000)
+ except Exception as e:
+        page.screenshot(path="screenshots/SpecificationDropDown.png")
+        print("📸 Screenshot saved: SpecificationDropDown.png")
+        raise Exception("❌ SpecificationDropDown is not Clicked Successfully, stopping test!")
+ 
+ SwaggerSelectionSpecificationDropDown =page.locator(f'//div[text()="Swagger_1"]')
+ try:
+       SwaggerSelectionSpecificationDropDown.click()
+       print("SwaggerSelectionSpecificationDropDown is clicked successfully")
+       page.wait_for_timeout(2000)
+ except Exception as e:
+        page.screenshot(path="screenshots/SwaggerSelectionSpecificationDropDown.png")
+        print("📸 Screenshot saved: SwaggerSelectionSpecificationDropDown.png")
+        raise Exception("❌ SwaggerSelectionSpecificationDropDown is not clicked successfully, stopping test!")
  
 #  OasName=Design_studio.Swagger_name
 #  print("oas---->" , OasName)
