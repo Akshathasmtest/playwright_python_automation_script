@@ -363,8 +363,8 @@ def Builder(page: Page):
        page.wait_for_timeout(2000)
  except Exception as e:
         print("❌ qaDevVirtualHost is not selected from virtual dropdown")
-        page.screenshot(path="screenshots/Select_a_host_to_deploy.png")
-        print("📸 Screenshot saved: Select_a_host_to_deploy.png")
+        page.screenshot(path="screenshots/qaDevVirtualHost.png")
+        print("📸 Screenshot saved: qaDevVirtualHost.png")
         raise Exception("❌ qaDevVirtualHost is not selected from virtual dropdown, stopping test!")
  
  

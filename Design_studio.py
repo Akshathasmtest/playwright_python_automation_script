@@ -11,22 +11,25 @@ def run_api_design_flow(page: Page):
     # --------- NAVIGATE TO API DESIGN PAGE ---------
     OAS_AddButton = page.goto("https://qa-dev.apiwiz.io/api-design/oas/new", wait_until="networkidle", timeout=60000)
    
-    
+    page.wait_for_timeout(2000)
     StartBlank=page.locator('//div[@class="bg-surface-l1 hover-parent fade-in-0 position-relative hover-bg-surface-underground h-144px p-24px w-234px border-stroke-subsection-1px br-8px hover-surface-underground cursor-pointer flex-col gap-8px"]')
     StartBlank.click()
-    
+    page.wait_for_timeout(2000)
     Swagger_name = page.locator('//input[@class="undefined  false hasBg null null w-100 formInputTag" and @placeholder="Enter swagger name"]').fill('Swagger_1')
+    page.wait_for_timeout(2000)
     Swagger_version=page.locator('//input[@class="undefined  false hasBg null null w-100 formInputTag" and @placeholder="Enter swagger version"]').fill('1.0.0')
+    page.wait_for_timeout(2000)
     Swagger_serviceUrl= page.locator('//input[@class="undefined  isDefault hasBg null null w-100 formInputTag" and @placeholder="Enter Terms of Services URL"]').fill('http://url.io')
+    page.wait_for_timeout(2000)
     Swagger_Description=page.locator('//textarea[@class="formInputTag w-100 false undefined hasBg null"]').fill('This Swagger definition provides a comprehensive specification of the API endpoints, request/response formats, authentication mechanisms, and error handling for the application. The purpose of this API is to enable developers to programmatically interact with the backend services in a standardized, consistent, and secure manner.')
-    
+    page.wait_for_timeout(2000)
     Environment_DropDown=page.locator('//div[@class="css-1xc3v61-indicatorContainer"]').click()
-    
-    Environment_details=page.locator('//div[text()="builder - 1 Domain"]').wait_for(state="visible", timeout=10000)
+    page.wait_for_timeout(2000)
+    Environment_details=page.locator('//div[text()="builder - 1 Domain"]').wait_for(state="visible", timeout=20000)
     Environment_details.click()
-
+    page.wait_for_timeout(2000)
     LicenceName=page.locator('//input[@class="undefined  isDefault hasBg null null w-100 formInputTag" and @placeholder="Enter license name"]').fill('Apache 2.0')
-    
+    page.wait_for_timeout(2000)
     licenseUrl = page.locator('//input[contains(@class,"formInputTag") and @placeholder="Enter license url"]')
     licenseUrl.wait_for(state="visible", timeout=20000)
     licenseUrl.fill("https://www.apache.org")
@@ -319,7 +322,7 @@ def main():
 
         # ---------- Login (Excel-driven) ----------
         username, password = get_excel_data(EXCEL_FILE)[0]  # fetch first row of Excel
-        # stage_login(page, username, password)  # ✅ pass the credentials
+        stage_login(page, username, password)  # ✅ pass the credentials
         
   
         print("✅ Logged in successfully")
